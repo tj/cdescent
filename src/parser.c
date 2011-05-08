@@ -27,7 +27,7 @@ FILE *input= 0;
 int   verboseFlag= 0;
 
 static int   lineNumber= 0;
-static char *fileName= 0;
+static char *filename= 0;
 static char *trailer= 0;
 static Header *headers= 0;
 
@@ -978,7 +978,7 @@ YY_PARSE(void) YY_NAME(parse_free)(CDESCENT *G)
 
 void yyerror(struct _CDESCENT *G, char *message)
 {
-  fprintf(stderr, "%s:%d: %s", fileName, lineNumber, message);
+  fprintf(stderr, "%s:%d: %s", filename, lineNumber, message);
   if (G->text[0]) fprintf(stderr, " near token '%s'", G->text);
   if (G->pos < G->limit || !feof(input))
     {
@@ -1040,16 +1040,16 @@ usage(char *name) {
   exit(1);
 }
 
-int main(int argc, char **argv)
-{
+int
+main(int argc, char **argv) {
   CDESCENT *G;
   Node *n;
   int   c;
 
-  output= stdout;
-  input= stdin;
-  lineNumber= 1;
-  fileName= "<stdin>";
+  output = stdout;
+  input = stdin;
+  lineNumber = 1;
+  filename = "<stdin>";
 
   while (-1 != (c= getopt(argc, argv, "Vho:v")))
     {
@@ -1091,7 +1091,7 @@ int main(int argc, char **argv)
     if (!strcmp(*argv, "-"))
       {
         input= stdin;
-        fileName= "<stdin>";
+        filename= "<stdin>";
       }
     else
       {
@@ -1100,7 +1100,7 @@ int main(int argc, char **argv)
       perror(*argv);
       exit(1);
     }
-        fileName= *argv;
+        filename= *argv;
       }
     lineNumber= 1;
     if (!yyparse(G))
