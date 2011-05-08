@@ -18,7 +18,7 @@ switch =
   ;
 
 value =
-    'on' { $$ = ON; }
+    'on'  { $$ = ON; }
   | 'off' { $$ = OFF; }
   ;
 
