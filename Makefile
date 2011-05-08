@@ -7,12 +7,14 @@ SRC = src/cdescent.c \
 
 OBJ = $(SRC:.c=.o)
 
+CFLAGS = -c -03
+
 bin/cdescent: $(OBJ)
 	@mkdir -p bin
-	$(CC) -03 $^ -o $@
+	$(CC) $^ $(LDFLAGS) -o $@
 
 %.o: %.c
-	$(CC) $< -c -o $@
+	$(CC) $< $(CFLAGS) -o $@
 
 clean:
 	rm -fr bin src/*.o
