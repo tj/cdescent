@@ -26,7 +26,7 @@ FILE *input= 0;
 
 int   verboseFlag= 0;
 
-static int   lineNumber= 0;
+static int   lineno= 0;
 static char *filename= 0;
 static char *trailer= 0;
 static Header *headers= 0;
@@ -38,7 +38,7 @@ void yyerror(struct _CDESCENT *, char *message);
 
 #define YY_INPUT(buf, result, max) {\
     int c= getc(input); \
-    if ('\n' == c || '\r' == c) ++lineNumber; \
+    if ('\n' == c || '\r' == c) ++lineno; \
     result= (EOF == c) ? 0 : (*(buf)= c, 1);  \
   }
 
@@ -978,7 +978,7 @@ YY_PARSE(void) YY_NAME(parse_free)(CDESCENT *G)
 
 void
 yyerror(struct _CDESCENT *G, char *message) {
-  fprintf(stderr, "%s:%d: %s", filename, lineNumber, message);
+  fprintf(stderr, "%s:%d: %s", filename, lineno, message);
   if (G->text[0]) fprintf(stderr, " near token '%s'", G->text);
   if (G->pos < G->limit || !feof(input)) {
     G->buf[G->limit]= '\0';
@@ -1049,6 +1049,10 @@ usage(char *name) {
   exit(1);
 }
 
+/*
+ * Parse arguments.
+ */
+
 int
 main(int argc, char **argv) {
   CDESCENT *G;
@@ -1057,7 +1061,7 @@ main(int argc, char **argv) {
 
   output = stdout;
   input = stdin;
-  lineNumber = 1;
+  lineno = 1;
   filename = "<stdin>";
 
   while (-1 != (c= getopt(argc, argv, "Vho:v")))
@@ -1111,7 +1115,7 @@ main(int argc, char **argv) {
     }
         filename= *argv;
       }
-    lineNumber= 1;
+    lineno= 1;
     if (!yyparse(G))
       yyerror(G, "syntax error");
     if (input != stdin)
