@@ -3,6 +3,13 @@
 
   C recursive descent parser generator based on _why's "greg", which is a slightly modified reentrant version Ian Piumarta's [peg(1)](http://piumarta.com/software/peg/).
 
+## Features
+
+  Features that differentiate cDescent from peg(1):
+  
+    - reentrant
+    - trailing action semi-colon is optional
+
 ## Build
 
     $ make
