@@ -1,4 +1,7 @@
-/* Copyright (c) 2007 by Ian Piumarta
+
+/*
+ * Copyright (c) 2011 by TJ Holowaychuk <tj@vision-media.ca>
+ * Copyright (c) 2007 by Ian Piumarta
  * All rights reserved.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a
