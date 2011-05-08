@@ -145,48 +145,57 @@ end-of-file=  !.
 
 %%
 
-void yyerror(struct _CDESCENT *G, char *message)
-{
+void
+yyerror(struct _CDESCENT *G, char *message) {
   fprintf(stderr, "%s:%d: %s", filename, lineNumber, message);
   if (G->text[0]) fprintf(stderr, " near token '%s'", G->text);
-  if (G->pos < G->limit || !feof(input))
-    {
-      G->buf[G->limit]= '\0';
-      fprintf(stderr, " before text \"");
-      while (G->pos < G->limit)
-  {
-    if ('\n' == G->buf[G->pos] || '\r' == G->buf[G->pos]) break;
-    fputc(G->buf[G->pos++], stderr);
-  }
-      if (G->pos == G->limit)
-  {
-    int c;
-    while (EOF != (c= fgetc(input)) && '\n' != c && '\r' != c)
-      fputc(c, stderr);
-  }
-      fputc('\"', stderr);
+  if (G->pos < G->limit || !feof(input)) {
+    G->buf[G->limit]= '\0';
+    fprintf(stderr, " before text \"");
+
+    while (G->pos < G->limit) {
+      if ('\n' == G->buf[G->pos] || '\r' == G->buf[G->pos]) break;
+      fputc(G->buf[G->pos++], stderr);
     }
+
+    if (G->pos == G->limit) {
+      int c;
+      while (EOF != (c= fgetc(input)) && '\n' != c && '\r' != c)
+        fputc(c, stderr);
+    }
+
+    fputc('\"', stderr);
+  }
+
   fprintf(stderr, "\n");
   exit(1);
 }
 
-void makeHeader(char *text)
-{
-  Header *header= (Header *)malloc(sizeof(Header));
-  header->text= strdup(text);
-  header->next= headers;
-  headers= header;
+void
+makeHeader(char *text) {
+  Header *header = (Header *)malloc(sizeof(Header));
+  header->text = strdup(text);
+  header->next = headers;
+  headers = header;
 }
 
-void makeTrailer(char *text)
-{
-  trailer= strdup(text);
+void
+makeTrailer(char *text) {
+  trailer = strdup(text);
 }
+
+/*
+ * Output cDescent version.
+ */
 
 static void
 version() {
   printf("%s\n", CDESCENT_VERSION);
 }
+
+/*
+ * Output usage information.
+ */
 
 static void
 usage(char *name) {
