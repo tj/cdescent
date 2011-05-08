@@ -9,17 +9,17 @@ program =
     switch
   | eol
   | < (!eol .)* >
-  { fprintf(stderr, "parse error near '%s'\n", yytext); }
+  { fprintf(stderr, "parse error near '%s'\n", yytext) }
   ;
 
 switch =
   a:name - '=' - b:value
-  { printf("%s is now %s\n", a, b ? "on" : "off"); }
+  { printf("%s is now %s\n", a, b ? "on" : "off") }
   ;
 
 value =
-    'on'  { $$ = ON; }
-  | 'off' { $$ = OFF; }
+    'on'  { $$ = ON }
+  | 'off' { $$ = OFF }
   ;
 
 name =
