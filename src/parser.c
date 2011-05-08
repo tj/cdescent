@@ -1014,9 +1014,9 @@ void makeTrailer(char *text)
   trailer= strdup(text);
 }
 
-static void version(char *name)
-{
-  printf("%s version %s\n", name, CDESCENT_VERSION);
+static void
+version() {
+  printf("%s\n", CDESCENT_VERSION);
 }
 
 static void
@@ -1027,10 +1027,10 @@ usage(char *name) {
     "\n"
     "  options:\n"
     "\n"
-    "    -h, --help         output help information\n"
-    "    -o, --out <file>   output to <file>\n"
-    "    -v, --verbose      enable verbose output\n"
-    "    -V, --version      output version number\n"
+    "    -h           output help information\n"
+    "    -o <file>   output to <file>\n"
+    "    -v          enable verbose output\n"
+    "    -V          output version number\n"
     "\n"
     "  examples:\n"
     "\n"
@@ -1056,7 +1056,7 @@ main(int argc, char **argv) {
       switch (c)
   {
   case 'V':
-    version(basename(argv[0]));
+    version();
     exit(0);
 
   case 'h':
