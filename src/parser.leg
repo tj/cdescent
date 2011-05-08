@@ -218,6 +218,10 @@ usage(char *name) {
   exit(1);
 }
 
+/*
+ * Parse arguments.
+ */
+
 int
 main(int argc, char **argv) {
   CDESCENT *G;
