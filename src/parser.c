@@ -357,12 +357,12 @@ YY_ACTION(void) yy_3_primary(CDESCENT *G, char *yytext, int yyleng, YY_XTYPE YY_
 YY_ACTION(void) yy_2_primary(CDESCENT *G, char *yytext, int yyleng, YY_XTYPE YY_XVAR)
 {
   yyprintf((stderr, "do yy_2_primary\n"));
-   Node *name= makeName(findRule(yytext));  name->name.variable= pop();  push(name); ;
+   Node *name= makeName(findRule(yytext, 0));  name->name.variable= pop();  push(name); ;
 }
 YY_ACTION(void) yy_1_primary(CDESCENT *G, char *yytext, int yyleng, YY_XTYPE YY_XVAR)
 {
   yyprintf((stderr, "do yy_1_primary\n"));
-   push(makeVariable(yytext, 0)); ;
+   push(makeVariable(yytext)); ;
 }
 YY_ACTION(void) yy_3_suffix(CDESCENT *G, char *yytext, int yyleng, YY_XTYPE YY_XVAR)
 {
