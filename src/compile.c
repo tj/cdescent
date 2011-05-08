@@ -312,7 +312,7 @@ static void Rule_compile_c2(Node *node)
 
       safe= ((Query == node->rule.expression->type) || (Star == node->rule.expression->type));
 
-      fprintf(output, "\nYY_RULE(int) yy_%s(GREG *G)\n{", node->rule.name);
+      fprintf(output, "\nYY_RULE(int) yy_%s(CDESCENT *G)\n{", node->rule.name);
       if (!safe) save(0);
       if (node->rule.variables)
   fprintf(output, "  yyDo(G, yyPush, %d, 0);", countVariables(node->rule.variables));
@@ -340,7 +340,7 @@ static char *header= "\
 #include <stdio.h>\n\
 #include <stdlib.h>\n\
 #include <string.h>\n\
-struct _GREG;\n\
+struct _CDESCENT;\n\
 ";
 
 static char *preamble= "\
@@ -403,10 +403,10 @@ static char *preamble= "\
 #ifndef YY_PART\n\
 #define yy G->ss\n\
 \n\
-typedef void (*yyaction)(struct _GREG *G, char *yytext, int yyleng, YY_XTYPE YY_XVAR);\n\
+typedef void (*yyaction)(struct _CDESCENT *G, char *yytext, int yyleng, YY_XTYPE YY_XVAR);\n\
 typedef struct _yythunk { int begin, end;  yyaction  action;  struct _yythunk *next; } yythunk;\n\
 \n\
-typedef struct _GREG {\n\
+typedef struct _CDESCENT {\n\
   char *buf;\n\
   int buflen;\n\
   int pos;\n\
@@ -423,9 +423,9 @@ typedef struct _GREG {\n\
   YYSTYPE *vals;\n\
   int valslen;\n\
   YY_XTYPE data;\n\
-} GREG;\n\
+} CDESCENT;\n\
 \n\
-YY_LOCAL(int) yyrefill(GREG *G)\n\
+YY_LOCAL(int) yyrefill(CDESCENT *G)\n\
 {\n\
   int yyn;\n\
   YY_XTYPE YY_XVAR = (YY_XTYPE)G->data;\n\
@@ -440,14 +440,14 @@ YY_LOCAL(int) yyrefill(GREG *G)\n\
   return 1;\n\
 }\n\
 \n\
-YY_LOCAL(int) yymatchDot(GREG *G)\n\
+YY_LOCAL(int) yymatchDot(CDESCENT *G)\n\
 {\n\
   if (G->pos >= G->limit && !yyrefill(G)) return 0;\n\
   ++G->pos;\n\
   return 1;\n\
 }\n\
 \n\
-YY_LOCAL(int) yymatchChar(GREG *G, int c)\n\
+YY_LOCAL(int) yymatchChar(CDESCENT *G, int c)\n\
 {\n\
   if (G->pos >= G->limit && !yyrefill(G)) return 0;\n\
   if ((unsigned char)G->buf[G->pos] == c)\n\
@@ -460,7 +460,7 @@ YY_LOCAL(int) yymatchChar(GREG *G, int c)\n\
   return 0;\n\
 }\n\
 \n\
-YY_LOCAL(int) yymatchString(GREG *G, char *s)\n\
+YY_LOCAL(int) yymatchString(CDESCENT *G, char *s)\n\
 {\n\
   int yysav= G->pos;\n\
   while (*s)\n\
@@ -477,7 +477,7 @@ YY_LOCAL(int) yymatchString(GREG *G, char *s)\n\
   return 1;\n\
 }\n\
 \n\
-YY_LOCAL(int) yymatchClass(GREG *G, unsigned char *bits)\n\
+YY_LOCAL(int) yymatchClass(CDESCENT *G, unsigned char *bits)\n\
 {\n\
   int c;\n\
   if (G->pos >= G->limit && !yyrefill(G)) return 0;\n\
@@ -492,7 +492,7 @@ YY_LOCAL(int) yymatchClass(GREG *G, unsigned char *bits)\n\
   return 0;\n\
 }\n\
 \n\
-YY_LOCAL(void) yyDo(GREG *G, yyaction action, int begin, int end)\n\
+YY_LOCAL(void) yyDo(CDESCENT *G, yyaction action, int begin, int end)\n\
 {\n\
   while (G->thunkpos >= G->thunkslen)\n\
     {\n\
@@ -505,7 +505,7 @@ YY_LOCAL(void) yyDo(GREG *G, yyaction action, int begin, int end)\n\
   ++G->thunkpos;\n\
 }\n\
 \n\
-YY_LOCAL(int) yyText(GREG *G, int begin, int end)\n\
+YY_LOCAL(int) yyText(CDESCENT *G, int begin, int end)\n\
 {\n\
   int yyleng= end - begin;\n\
   if (yyleng <= 0)\n\
@@ -523,7 +523,7 @@ YY_LOCAL(int) yyText(GREG *G, int begin, int end)\n\
   return yyleng;\n\
 }\n\
 \n\
-YY_LOCAL(void) yyDone(GREG *G)\n\
+YY_LOCAL(void) yyDone(CDESCENT *G)\n\
 {\n\
   int pos;\n\
   for (pos= 0;  pos < G->thunkpos;  ++pos)\n\
@@ -536,7 +536,7 @@ YY_LOCAL(void) yyDone(GREG *G)\n\
   G->thunkpos= 0;\n\
 }\n\
 \n\
-YY_LOCAL(void) yyCommit(GREG *G)\n\
+YY_LOCAL(void) yyCommit(CDESCENT *G)\n\
 {\n\
   if ((G->limit -= G->pos))\n\
     {\n\
@@ -547,7 +547,7 @@ YY_LOCAL(void) yyCommit(GREG *G)\n\
   G->pos= G->thunkpos= 0;\n\
 }\n\
 \n\
-YY_LOCAL(int) yyAccept(GREG *G, int tp0)\n\
+YY_LOCAL(int) yyAccept(CDESCENT *G, int tp0)\n\
 {\n\
   if (tp0)\n\
     {\n\
@@ -562,7 +562,7 @@ YY_LOCAL(int) yyAccept(GREG *G, int tp0)\n\
   return 1;\n\
 }\n\
 \n\
-YY_LOCAL(void) yyPush(GREG *G, char *text, int count, YY_XTYPE YY_XVAR) {\n\
+YY_LOCAL(void) yyPush(CDESCENT *G, char *text, int count, YY_XTYPE YY_XVAR) {\n\
   size_t off = (G->val - G->vals) + count;\n\
   if (off > G->valslen) {\n\
     while (G->valslen < off + 1)\n\
@@ -573,8 +573,8 @@ YY_LOCAL(void) yyPush(GREG *G, char *text, int count, YY_XTYPE YY_XVAR) {\n\
     G->val += count;\n\
   }\n\
 }\n\
-YY_LOCAL(void) yyPop(GREG *G, char *text, int count, YY_XTYPE YY_XVAR)  { G->val -= count; }\n\
-YY_LOCAL(void) yySet(GREG *G, char *text, int count, YY_XTYPE YY_XVAR)  { G->val[count]= G->ss; }\n\
+YY_LOCAL(void) yyPop(CDESCENT *G, char *text, int count, YY_XTYPE YY_XVAR)  { G->val -= count; }\n\
+YY_LOCAL(void) yySet(CDESCENT *G, char *text, int count, YY_XTYPE YY_XVAR)  { G->val[count]= G->ss; }\n\
 \n\
 #endif /* YY_PART */\n\
 \n\
@@ -586,9 +586,9 @@ static char *footer= "\n\
 \n\
 #ifndef YY_PART\n\
 \n\
-typedef int (*yyrule)(GREG *G);\n\
+typedef int (*yyrule)(CDESCENT *G);\n\
 \n\
-YY_PARSE(int) YY_NAME(parse_from)(GREG *G, yyrule yystart)\n\
+YY_PARSE(int) YY_NAME(parse_from)(CDESCENT *G, yyrule yystart)\n\
 {\n\
   int yyok;\n\
   if (!G->buflen)\n\
@@ -625,19 +625,19 @@ YY_PARSE(int) YY_NAME(parse_from)(GREG *G, yyrule yystart)\n\
   (void)yySet;\n\
 }\n\
 \n\
-YY_PARSE(int) YY_NAME(parse)(GREG *G)\n\
+YY_PARSE(int) YY_NAME(parse)(CDESCENT *G)\n\
 {\n\
   return YY_NAME(parse_from)(G, yy_%s);\n\
 }\n\
 \n\
-YY_PARSE(GREG *) YY_NAME(parse_new)(YY_XTYPE data)\n\
+YY_PARSE(CDESCENT *) YY_NAME(parse_new)(YY_XTYPE data)\n\
 {\n\
-  GREG *G = (GREG *)YY_CALLOC(1, sizeof(GREG), G->data);\n\
+  CDESCENT *G = (CDESCENT *)YY_CALLOC(1, sizeof(CDESCENT), G->data);\n\
   G->data = data;\n\
   return G;\n\
 }\n\
 \n\
-YY_PARSE(void) YY_NAME(parse_free)(GREG *G)\n\
+YY_PARSE(void) YY_NAME(parse_free)(CDESCENT *G)\n\
 {\n\
   YY_FREE(G);\n\
 }\n\
@@ -723,11 +723,11 @@ void Rule_compile_c(Node *node)
 
   fprintf(output, "%s", preamble);
   for (n= node;  n;  n= n->rule.next)
-    fprintf(output, "YY_RULE(int) yy_%s(GREG *G); /* %d */\n", n->rule.name, n->rule.id);
+    fprintf(output, "YY_RULE(int) yy_%s(CDESCENT *G); /* %d */\n", n->rule.name, n->rule.id);
   fprintf(output, "\n");
   for (n= actions;  n;  n= n->action.list)
     {
-      fprintf(output, "YY_ACTION(void) yy%s(GREG *G, char *yytext, int yyleng, YY_XTYPE YY_XVAR)\n{\n", n->action.name);
+      fprintf(output, "YY_ACTION(void) yy%s(CDESCENT *G, char *yytext, int yyleng, YY_XTYPE YY_XVAR)\n{\n", n->action.name);
       defineVariables(n->action.rule->rule.variables);
       fprintf(output, "  yyprintf((stderr, \"do yy%s\\n\"));\n", n->action.name);
       fprintf(output, "  %s;\n", n->action.text);

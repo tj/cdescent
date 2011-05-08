@@ -1,7 +1,7 @@
 
 CC ?= gcc
 
-SRC = src/cdescent.c \
+SRC = src/parser.c \
 			src/compile.c \
 			src/tree.c
 
@@ -12,6 +12,9 @@ CFLAGS = -c -03
 bin/cdescent: $(OBJ)
 	@mkdir -p bin
 	$(CC) $^ $(LDFLAGS) -o $@
+
+src/parser.c: src/parser.leg
+	./bin/cdescent < $< > $@
 
 %.o: %.c
 	$(CC) $< $(CFLAGS) -o $@
