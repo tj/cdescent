@@ -28,7 +28,9 @@
 (The MIT License)
 
 Copyright (c) 2011 TJ Holowaychuk &lt;tj@vision-media.ca&gt;
+
 Copyright (c) 2008 why the lucky stiff
+
 Copyright (c) 2007 by Ian Piumarta
 
 Permission is hereby granted, free of charge, to any person obtaining
