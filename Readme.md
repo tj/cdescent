@@ -1,7 +1,15 @@
 
 # cdescent
 
-  C Recursive descent parser generator based on _why's "greg", which is Ian Piumarta's [peg(1)](http://piumarta.com/software/peg/) extended to become reentrant.
+  C Recursive descent parser generator based on _why's "greg", which is a slightly modified reentrant version Ian Piumarta's [peg(1)](http://piumarta.com/software/peg/).
+
+## Installation
+
+     $ make install
+
+## Documentation
+
+  Currently the syntax is untouched, just cleaning up some logic. so check out the "leg" sections of [http://piumarta.com/software/peg/peg.1.html](http://piumarta.com/software/peg/peg.1.html).
 
 ## License 
 
