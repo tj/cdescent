@@ -154,16 +154,16 @@ void yyerror(struct _CDESCENT *G, char *message)
       G->buf[G->limit]= '\0';
       fprintf(stderr, " before text \"");
       while (G->pos < G->limit)
-	{
-	  if ('\n' == G->buf[G->pos] || '\r' == G->buf[G->pos]) break;
-	  fputc(G->buf[G->pos++], stderr);
-	}
+  {
+    if ('\n' == G->buf[G->pos] || '\r' == G->buf[G->pos]) break;
+    fputc(G->buf[G->pos++], stderr);
+  }
       if (G->pos == G->limit)
-	{
-	  int c;
-	  while (EOF != (c= fgetc(input)) && '\n' != c && '\r' != c)
-	    fputc(c, stderr);
-	}
+  {
+    int c;
+    while (EOF != (c= fgetc(input)) && '\n' != c && '\r' != c)
+      fputc(c, stderr);
+  }
       fputc('\"', stderr);
     }
   fprintf(stderr, "\n");
@@ -216,31 +216,31 @@ int main(int argc, char **argv)
   while (-1 != (c= getopt(argc, argv, "Vho:v")))
     {
       switch (c)
-	{
-	case 'V':
-	  version(basename(argv[0]));
-	  exit(0);
+  {
+  case 'V':
+    version(basename(argv[0]));
+    exit(0);
 
-	case 'h':
-	  usage(basename(argv[0]));
-	  break;
+  case 'h':
+    usage(basename(argv[0]));
+    break;
 
-	case 'o':
-	  if (!(output= fopen(optarg, "w")))
-	    {
-	      perror(optarg);
-	      exit(1);
-	    }
-	  break;
+  case 'o':
+    if (!(output= fopen(optarg, "w")))
+      {
+        perror(optarg);
+        exit(1);
+      }
+    break;
 
-	case 'v':
-	  verboseFlag= 1;
-	  break;
+  case 'v':
+    verboseFlag= 1;
+    break;
 
-	default:
-	  fprintf(stderr, "for usage try: %s -h\n", argv[0]);
-	  exit(1);
-	}
+  default:
+    fprintf(stderr, "for usage try: %s -h\n", argv[0]);
+    exit(1);
+  }
     }
   argc -= optind;
   argv += optind;
@@ -249,27 +249,27 @@ int main(int argc, char **argv)
   if (argc)
     {
       for (;  argc;  --argc, ++argv)
-	{
-	  if (!strcmp(*argv, "-"))
-	    {
-	      input= stdin;
-	      fileName= "<stdin>";
-	    }
-	  else
-	    {
-	      if (!(input= fopen(*argv, "r")))
-		{
-		  perror(*argv);
-		  exit(1);
-		}
-	      fileName= *argv;
-	    }
-	  lineNumber= 1;
-	  if (!yyparse(G))
-	    yyerror(G, "syntax error");
-	  if (input != stdin)
-	    fclose(input);
-	}
+  {
+    if (!strcmp(*argv, "-"))
+      {
+        input= stdin;
+        fileName= "<stdin>";
+      }
+    else
+      {
+        if (!(input= fopen(*argv, "r")))
+    {
+      perror(*argv);
+      exit(1);
+    }
+        fileName= *argv;
+      }
+    lineNumber= 1;
+    if (!yyparse(G))
+      yyerror(G, "syntax error");
+    if (input != stdin)
+      fclose(input);
+  }
     }
   else
     if (!yyparse(G))
