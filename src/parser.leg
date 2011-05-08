@@ -19,45 +19,45 @@
 # Last edited: 2007-09-13 08:12:17 by piumarta on emilia.local
 
 %{
-# include "cdescent.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <string.h>
-# include <libgen.h>
-# include <assert.h>
+#include "cdescent.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <libgen.h>
+#include <assert.h>
 
-  typedef struct Header Header;
+typedef struct Header Header;
 
-  struct Header {
-    char   *text;
-    Header *next;
-  };
+struct Header {
+  char   *text;
+  Header *next;
+};
 
-  FILE *input= 0;
+FILE *input= 0;
 
-  int   verboseFlag= 0;
+int   verboseFlag= 0;
 
-  static int   lineNumber= 0;
-  static char *fileName= 0;
-  static char *trailer= 0;
-  static Header *headers= 0;
+static int   lineNumber= 0;
+static char *fileName= 0;
+static char *trailer= 0;
+static Header *headers= 0;
 
-  void makeHeader(char *text);
-  void makeTrailer(char *text);
+void makeHeader(char *text);
+void makeTrailer(char *text);
 
-  void yyerror(struct _CDESCENT *, char *message);
+void yyerror(struct _CDESCENT *, char *message);
 
-# define YY_INPUT(buf, result, max)   \
-  {           \
-    int c= getc(input);       \
+#define YY_INPUT(buf, result, max) {\
+    int c= getc(input); \
     if ('\n' == c || '\r' == c) ++lineNumber; \
     result= (EOF == c) ? 0 : (*(buf)= c, 1);  \
   }
 
-# define YY_LOCAL(T)  static T
-# define YY_RULE(T) static T
+#define YY_LOCAL(T)  static T
+#define YY_RULE(T) static T
+
 %}
 
 # Hierarchical syntax
