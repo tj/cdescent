@@ -188,17 +188,24 @@ static void version(char *name)
   printf("%s version %s\n", name, CDESCENT_VERSION);
 }
 
-static void usage(char *name)
-{
-  version(name);
-  fprintf(stderr, "usage: %s [<option>...] [<file>...]\n", name);
-  fprintf(stderr, "where <option> can be\n");
-  fprintf(stderr, "  -h          print this help information\n");
-  fprintf(stderr, "  -o <ofile>  write output to <ofile>\n");
-  fprintf(stderr, "  -v          be verbose\n");
-  fprintf(stderr, "  -V          print version number and exit\n");
-  fprintf(stderr, "if no <file> is given, input is read from stdin\n");
-  fprintf(stderr, "if no <ofile> is given, output is written to stdout\n");
+static void
+usage(char *name) {
+  fprintf(stderr,
+    "\n"
+    "  usage: %s [options] <file ...>\n"
+    "\n"
+    "  options:\n"
+    "\n"
+    "    -h, --help         output help information\n"
+    "    -o, --out <file>   output to <file>\n"
+    "    -v, --verbose      enable verbose output\n"
+    "    -V, --version      output version number\n"
+    "\n"
+    "  examples:\n"
+    "\n"
+    "      $ cdescent < in.g > out.c\n"
+    "\n"
+    , name);
   exit(1);
 }
 

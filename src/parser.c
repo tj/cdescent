@@ -42,8 +42,9 @@ void yyerror(struct _CDESCENT *, char *message);
     result= (EOF == c) ? 0 : (*(buf)= c, 1);  \
   }
 
-# define YY_LOCAL(T)  static T
-# define YY_RULE(T) static T
+#define YY_LOCAL(T)  static T
+#define YY_RULE(T) static T
+
 
 #ifndef YY_ALLOC
 #define YY_ALLOC(N, D) malloc(N)
@@ -984,16 +985,16 @@ void yyerror(struct _CDESCENT *G, char *message)
       G->buf[G->limit]= '\0';
       fprintf(stderr, " before text \"");
       while (G->pos < G->limit)
-	{
-	  if ('\n' == G->buf[G->pos] || '\r' == G->buf[G->pos]) break;
-	  fputc(G->buf[G->pos++], stderr);
-	}
+  {
+    if ('\n' == G->buf[G->pos] || '\r' == G->buf[G->pos]) break;
+    fputc(G->buf[G->pos++], stderr);
+  }
       if (G->pos == G->limit)
-	{
-	  int c;
-	  while (EOF != (c= fgetc(input)) && '\n' != c && '\r' != c)
-	    fputc(c, stderr);
-	}
+  {
+    int c;
+    while (EOF != (c= fgetc(input)) && '\n' != c && '\r' != c)
+      fputc(c, stderr);
+  }
       fputc('\"', stderr);
     }
   fprintf(stderr, "\n");
@@ -1018,17 +1019,24 @@ static void version(char *name)
   printf("%s version %s\n", name, CDESCENT_VERSION);
 }
 
-static void usage(char *name)
-{
-  version(name);
-  fprintf(stderr, "usage: %s [<option>...] [<file>...]\n", name);
-  fprintf(stderr, "where <option> can be\n");
-  fprintf(stderr, "  -h          print this help information\n");
-  fprintf(stderr, "  -o <ofile>  write output to <ofile>\n");
-  fprintf(stderr, "  -v          be verbose\n");
-  fprintf(stderr, "  -V          print version number and exit\n");
-  fprintf(stderr, "if no <file> is given, input is read from stdin\n");
-  fprintf(stderr, "if no <ofile> is given, output is written to stdout\n");
+static void
+usage(char *name) {
+  fprintf(stderr,
+    "\n"
+    "  usage: %s [options] <file ...>\n"
+    "\n"
+    "  options:\n"
+    "\n"
+    "    -h, --help         output help information\n"
+    "    -o, --out <file>   output to <file>\n"
+    "    -v, --verbose      enable verbose output\n"
+    "    -V, --version      output version number\n"
+    "\n"
+    "  examples:\n"
+    "\n"
+    "      $ cdescent < in.g > out.c\n"
+    "\n"
+    , name);
   exit(1);
 }
 
@@ -1046,31 +1054,31 @@ int main(int argc, char **argv)
   while (-1 != (c= getopt(argc, argv, "Vho:v")))
     {
       switch (c)
-	{
-	case 'V':
-	  version(basename(argv[0]));
-	  exit(0);
+  {
+  case 'V':
+    version(basename(argv[0]));
+    exit(0);
 
-	case 'h':
-	  usage(basename(argv[0]));
-	  break;
+  case 'h':
+    usage(basename(argv[0]));
+    break;
 
-	case 'o':
-	  if (!(output= fopen(optarg, "w")))
-	    {
-	      perror(optarg);
-	      exit(1);
-	    }
-	  break;
+  case 'o':
+    if (!(output= fopen(optarg, "w")))
+      {
+        perror(optarg);
+        exit(1);
+      }
+    break;
 
-	case 'v':
-	  verboseFlag= 1;
-	  break;
+  case 'v':
+    verboseFlag= 1;
+    break;
 
-	default:
-	  fprintf(stderr, "for usage try: %s -h\n", argv[0]);
-	  exit(1);
-	}
+  default:
+    fprintf(stderr, "for usage try: %s -h\n", argv[0]);
+    exit(1);
+  }
     }
   argc -= optind;
   argv += optind;
@@ -1079,27 +1087,27 @@ int main(int argc, char **argv)
   if (argc)
     {
       for (;  argc;  --argc, ++argv)
-	{
-	  if (!strcmp(*argv, "-"))
-	    {
-	      input= stdin;
-	      fileName= "<stdin>";
-	    }
-	  else
-	    {
-	      if (!(input= fopen(*argv, "r")))
-		{
-		  perror(*argv);
-		  exit(1);
-		}
-	      fileName= *argv;
-	    }
-	  lineNumber= 1;
-	  if (!yyparse(G))
-	    yyerror(G, "syntax error");
-	  if (input != stdin)
-	    fclose(input);
-	}
+  {
+    if (!strcmp(*argv, "-"))
+      {
+        input= stdin;
+        fileName= "<stdin>";
+      }
+    else
+      {
+        if (!(input= fopen(*argv, "r")))
+    {
+      perror(*argv);
+      exit(1);
+    }
+        fileName= *argv;
+      }
+    lineNumber= 1;
+    if (!yyparse(G))
+      yyerror(G, "syntax error");
+    if (input != stdin)
+      fclose(input);
+  }
     }
   else
     if (!yyparse(G))
