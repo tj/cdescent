@@ -14,7 +14,7 @@ program =
 
 switch =
   a:name - '=' - b:value
-  { printf("%s is now %s\n", a, b ? "on" : "off") }
+  { printf("%s is now %s\n", (char *)a, b ? "on" : "off") }
   ;
 
 value =

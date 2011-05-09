@@ -30,4 +30,9 @@ uninstall:
 clean:
 	rm -fr bin src/*.o
 
-.PHONY: clean install uninstall
+test: bin/cdescent
+	./$< examples/switch.g > examples/switch.c \
+		&& $(CC) examples/switch.c -o examples/switch \
+		&& ./examples/switch
+
+.PHONY: test clean install uninstall
