@@ -8,6 +8,7 @@
   Features that differentiate cDescent from peg(1):
   
     - reentrant
+    - `=` or `:` are valid for rule assignment
     - trailing action semi-colon is optional
 
 ## Build

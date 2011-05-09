@@ -70,7 +70,7 @@ trailer=  '%%' < .* >       { makeTrailer(yytext); }          #{YYACCEPT}
 
 definition= s:identifier        { if (push(beginRule(findRule(yytext, s)))->rule.expression)
                   fprintf(stderr, "rule '%s' redefined\n", yytext); }
-      EQUAL expression    { Node *e= pop();  Rule_setExpression(pop(), e); }
+      (EQUAL | COLON) expression    { Node *e= pop();  Rule_setExpression(pop(), e); }
       SEMICOLON?                      #{YYACCEPT}
 
 expression= sequence (BAR sequence      { Node *f= pop();  push(Alternate_append(pop(), f)); }
