@@ -36,3 +36,4 @@ test: bin/cdescent
 		&& ./examples/switch
 
 .PHONY: test clean install uninstall
+
