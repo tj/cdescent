@@ -9,7 +9,7 @@ SRC = src/parser.c \
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = -c -03
+CFLAGS = -c -O3
 
 bin/cdescent: $(OBJ)
 	@mkdir -p bin
@@ -36,3 +36,4 @@ test: bin/cdescent
 		&& ./examples/switch
 
 .PHONY: test clean install uninstall
+
